@@ -1,0 +1,31 @@
+def main():
+    from sys import stdin
+    input = stdin.readline
+
+    from itertools import permutations
+    import math
+
+    N = N = int(input())
+    xy_list = []
+
+    for _ in range(N):
+        x, y = map(int, input().split())
+        xy_list.append((x, y))
+
+    cnt = 0
+    len_sum = 0
+    for m in permutations(range(N), N):
+        for idx, num in enumerate(m):
+            new_num = num
+            if idx == 0:
+                old_num = num
+            else:
+                len_sum += ((xy_list[old_num][0] - xy_list[new_num][0])**2
+                 + (xy_list[old_num][1] - xy_list[new_num][1])**2)**0.5
+                cnt += 1
+                old_num = num
+
+    print(len_sum / math.factorial(N))
+
+if __name__ == '__main__':
+    main()

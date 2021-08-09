@@ -1,0 +1,29 @@
+from itertools import product
+N, M = map(int, input().split())
+S = []
+for m in range(M):
+    s = list(map(int, input().split()))
+    S.append(s[1:])
+P = list(map(int, input().split()))
+
+# switchのON,OFFの全通りをbit全探索
+cnt = 0  # 電球が全点灯するbitパターン数
+for bits in product([0, 1], repeat=N):
+    flg = True  # すべての電球がONなら最後までTrue
+    # 各電球の点灯を調べる
+    for i in range(M):
+        # 電球iが点灯するか調べる
+        ON_cnt = 0  # 電球iに繋がるswichのONの数
+        # 電球iに繋がるswitch sがONかを調べる
+        for s in S[i]:
+            if bits[s-1] == 1:
+                ON_cnt += 1
+        # ON_cntの偶奇を調べ、電球iが点灯するか判断
+        if ON_cnt % 2 == P[i]:
+            pass
+        else:
+            flg = False
+    if flg:
+        cnt += 1
+
+print(cnt)

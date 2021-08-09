@@ -1,0 +1,31 @@
+    from sys import stdin
+    input = stdin.readline
+
+    from itertools import combinations
+    N, K = map(int, input().split())
+    A = list(map(int, input().split()))
+    min_cnt = 10**18
+
+    # 高くする建物の組み合わせ(hight_plus_num_list)を全探索
+    for hight_plus_num_list in combinations(range(1, N), K-1):
+        tmp_cnt = 0
+        tmp_base_hight = A[0]
+        # 建物を左から順に確認
+        for idx in range(1, N):
+            # hight_plus_num_listの建物であれば高さを加える
+            if idx in hight_plus_num_list:
+                if tmp_base_hight >= A[idx]:
+                    tmp_base_hight += 1
+                    tmp_cnt += (tmp_base_hight - A[idx])
+                else:
+                    tmp_base_hight = A[idx]
+            # hight_plus_num_listの建物でなくともtmp_base_hightを更新
+            else:
+                tmp_base_hight = max(A[idx], tmp_base_hight)
+
+        min_cnt = min(min_cnt, tmp_cnt)
+
+    print(min_cnt)
+
+if __name__ == '__main__':
+    main()

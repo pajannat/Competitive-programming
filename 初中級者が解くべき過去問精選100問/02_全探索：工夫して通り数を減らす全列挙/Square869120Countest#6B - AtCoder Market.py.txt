@@ -1,0 +1,23 @@
+from sys import stdin
+input = stdin.readline
+
+from statistics import median 
+
+N = int(input())
+A = []
+B = []
+for n in range(N):
+    a, b = map(int, input().split())
+    A.append(a)
+    B.append(b)
+
+A_median = int(median(A))
+B_median = int(median(B))
+
+ans = 0
+for i in range(N):
+    ans += abs(A[i]-B[i]) # AからB
+    ans += abs(A[i]-A_median) # 入口からA
+    ans += abs(B[i]-B_median) # 出口からB
+
+print(ans)

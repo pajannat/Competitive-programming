@@ -1,0 +1,24 @@
+from itertools import product
+n = int(input())
+A = list(map(int, input().split()))
+q = int(input())
+M = list(map(int, input().split()))
+
+sum_set = set()
+for p in product((0,1),repeat=n): # bit全探索
+    sum = 0
+    # bitが1である場所のA[i]を足し合わせる。
+        # 例:
+        #    A: 1 5 7 10 21
+        #    p: 1 0 1 0  1
+        # sum = 1  +7    +21
+    for i in range(n):
+        if p[i] == 1:
+            sum += A[i]
+    sum_set.add(sum)
+
+for m in M:
+    if m in sum_set:
+        print('yes')
+    else:
+        print('no')

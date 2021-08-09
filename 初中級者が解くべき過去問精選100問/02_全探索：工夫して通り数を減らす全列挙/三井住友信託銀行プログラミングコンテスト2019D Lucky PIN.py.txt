@@ -1,0 +1,24 @@
+from sys import stdin
+input = stdin.readline
+
+from itertools import product
+
+N = int(input())
+S = input().rstrip()
+S = [int(s) for s in S]
+
+ans = 0
+# 000~999まで全列挙
+for q in product(range(10),repeat=3):
+    # q[0],q[1],q[2]に一致するsをSの左から探索
+    i = 0
+    for s in S:
+        # q[i]とsが一致した場合、i=>i+1としてq[i+1]の探索へ移行
+        if q[i] == s:
+            # i == 2のとき探索成功
+            if i == 2:
+                ans += 1
+                break
+            i += 1
+
+print(ans)

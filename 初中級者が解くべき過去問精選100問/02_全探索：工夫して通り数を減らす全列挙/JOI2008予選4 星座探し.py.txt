@@ -1,0 +1,31 @@
+from sys import stdin
+input = stdin.readline
+
+star_M = []
+star_N = []
+M = int(input()) # 探したい星座
+for m in range(M):
+    x, y = map(int,input().split())
+    star_M.append((x,y))
+
+N = int(input()) # 星空の写真
+for n in range(N):
+    x, y = map(int,input().split())
+    star_N.append((x,y))
+star_N_set = set(star_N) # inが高速
+base = star_M[0] # 探したい星座のうち基準となる星を設定
+
+# 基準となる星(base)を星空の写真(star_N)の星へ平行移動。全探索する。
+for sn in star_N:
+    dx, dy  = sn[0]-base[0], sn[1]-base[1] # 平行移動量
+    Flg = True # 星座が一致するかを判断するFlg
+	# 探したい星座の各点を平行移動。星空の写真の星(star_N_set)に含まれるかチェック
+    for sm in star_M:
+		# 一致する星がない場合FlgをFalseへ
+        if not (sm[0]+dx, sm[1]+dy) in star_N_set: # さらに高速化 O(MN)
+            Flg = False 
+            break
+	# 星座が一致した場合
+    if (Flg):
+        print (dx,dy)
+        exit()

@@ -1,0 +1,37 @@
+def main():
+    from sys import stdin
+    input = stdin.readline
+
+    import bisect
+    import itertools
+
+    N, M = map(int, input().split())
+    S = []
+    for i in range(N):
+        S.append(int(input()))
+
+    score_1 = []
+    all = itertools.product(S, repeat=2)
+    for x in all:
+        score_1.append(sum(x))
+    
+    # 1,2回投げたときのscoreの全パターンがscore_1
+    score_1.extend(S)
+    score_1.sort()
+
+    # score_1から、重複を許し2回値を取り出す
+    # →3,4回投げたときのscore
+    score = 0
+    for s1 in score_1:
+        if s1 > M:
+            break
+        else:
+            i = bisect.bisect_right(score_1, M-s1) - 1
+            if i < 0:
+                break
+            score = max(score, s1 + score_1[i])
+
+    print(score)
+
+if __name__ == '__main__':
+    main()

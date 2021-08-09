@@ -1,0 +1,10 @@
+from sys import stdin
+input = stdin.readline
+
+A,B,C,X,Y = map(int,input().split())
+
+min_sum = 10**10
+for c in range(10**5+1):
+        min_sum = min(min_sum,A*max(X-c,0) + B*max(Y-c,0) + 2*c*C)
+        
+print(min_sum)

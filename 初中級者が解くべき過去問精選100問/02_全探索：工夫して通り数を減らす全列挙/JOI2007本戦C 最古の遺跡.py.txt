@@ -1,0 +1,22 @@
+from sys import stdin
+input = stdin.readline
+
+from itertools import combinations
+
+N = int(input())
+xy_set = set()
+for _ in range(N):
+	x,y = map(int,input().split())
+	xy_set.add((x,y))
+
+ans = 0
+for p1, p2 in combinations(xy_set,2):
+	x1, y1 = p1
+	x2, y2 = p2
+	p3 = (x2 + y2 - y1, y2 - x2 + x1)
+	p4 = (x1 + y2 - y1, y1 - x2 + x1)
+	if p3 in xy_set and p4 in xy_set:
+		square = (x2 - x1)**2 + (y2 - y1)**2
+		ans = max(ans,square)
+
+print(ans)

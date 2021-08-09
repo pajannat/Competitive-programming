@@ -1,0 +1,33 @@
+from itertools import product
+
+R, C = map(int, input().split())
+lines = []
+for r in range(R):
+    line = list(map(int, input().split()))
+    lines.append(line)
+
+ans = 0
+# 煎餅を裏返すパターンを全探索
+for bins in product((0, 1), repeat=R):
+    lines_copy = lines.copy()
+    # bin == 1の行を裏返す
+    for i, bin in enumerate(bins):
+        if bin == 1:
+            lines_copy[i] = [int(not x) for x in lines_copy[i]]
+
+    # 出荷できる煎餅を最大化するように列を裏返す
+    # 列の合計値を計算するためにlines_copyを転置
+    lines_inv = list(zip(*lines_copy))
+    lines_col_sum = [sum(x) for x in lines_inv]
+
+    # 表の煎餅の合計値が多ければ列を裏返す
+    for j, col_sum in enumerate(lines_col_sum):
+        if col_sum >= (R / 2):
+            lines_inv[j] = [int(not x) for x in lines_inv[j]]
+
+    non_sale_sum = 0
+    for line_inv in lines_inv:
+        non_sale_sum += sum(line_inv)
+    ans = max(ans, R*C - non_sale_sum)
+
+print(ans)

@@ -1,0 +1,28 @@
+def main():
+    from sys import stdin
+    input = stdin.readline
+
+    import bisect
+
+    d = int(input())
+    N = int(input())
+    M = int(input())
+
+    shop = [0]
+    home = []
+    for n in range(N-1):
+        shop.append(int(input()))
+    for m in range(M):
+        home.append(int(input()))
+    shop.sort()
+    shop.append(d)
+
+    sum = 0
+    for h in home:
+        index = bisect.bisect_left(shop, h)
+        d_tmp = min(abs(shop[index]-h), abs(shop[index-1]-h))
+        sum += d_tmp
+    print(sum)
+
+if __name__ == '__main__':
+    main()
