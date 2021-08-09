@@ -1,0 +1,14 @@
+N, H, M, T = map(int,input().split())
+
+# 起床時の分の値の合計値(時への繰り上げ前)
+M_sum = M + T*(N-1)
+
+# 起床時の時の値の合計値
+H_wake = H + M_sum // 60
+H_wake = H_wake % 24
+
+# 起床時の分の値の合計値(時への繰り上げ後)
+M_wake = M_sum % 60
+
+print(H_wake)
+print(M_wake)

@@ -1,0 +1,12 @@
+import math
+
+N = int(input())
+A = map(int,input().split())
+
+# 昇順ソート
+A = sorted(A)
+
+if N % 2 == 0:
+	print((A[(N-1) // 2] + A[math.ceil((N-1) / 2)]) / 2)
+else:
+	print(A[int(N / 2)])

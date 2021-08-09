@@ -1,0 +1,11 @@
+K, N, F = map(int, input().split())
+family_age = [int(i) for i in input().split()]
+sum = K * N
+
+for i in range(F):
+	sum -= family_age[i]
+
+if sum < 0:
+	print(-1)
+else:
+	print(sum)

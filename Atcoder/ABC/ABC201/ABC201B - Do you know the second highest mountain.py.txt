@@ -1,0 +1,15 @@
+def main():
+    from sys import stdin
+    input = stdin.readline
+
+    N = int(input())
+    A = [list(input().split()) for _ in range(N)]
+    d = dict()
+    for idx in range(N):
+        d[A[idx][0]] = int(A[idx][1])
+    sorted_d = sorted(d.items(), key=lambda x:x[1], reverse=True)
+
+    print(sorted_d[1][0])
+
+if __name__ == '__main__':
+    main()

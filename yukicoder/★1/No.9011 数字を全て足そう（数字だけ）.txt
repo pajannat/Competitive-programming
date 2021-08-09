@@ -1,0 +1,6 @@
+first = input()			# 標準入力受け取り
+len_input = len(first)	# 入力文字列の長さ
+sum = 0					# 合計値
+for i in range(len_input):
+    sum += int(first[i])
+print(sum)

@@ -1,0 +1,12 @@
+# リストに整数を格納
+x = [int(i) for i in input().split()]
+
+# リストに1~10を格納
+y = [i for i in range(1,11)]
+
+for i in range(len(x)):
+	if x[i] != y[i]:
+		print(y[i])
+		break;
+	if i == len(x) -1:
+		print(y[i+1])

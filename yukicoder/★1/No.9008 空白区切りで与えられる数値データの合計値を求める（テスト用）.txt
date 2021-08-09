@@ -1,0 +1,21 @@
+# 標準入力から一行分を読み出し、文字列として格納する。
+first = input()
+
+# 入力文字列をint型に変換
+first_int = int(first)
+
+#2行目を読み込む
+second = input()
+
+# 読み込んだ文字列をスペースで分割する
+split_second = second.split()
+
+# 合計値を定義
+sum = 0
+
+# 数値列を合計する
+for i in range(first_int):
+    sum += int(split_second[i])
+
+# 標準出力に書き出す
+print(sum)

@@ -1,0 +1,21 @@
+S = input().rstrip()
+ACGT_len_max = 0
+
+# 部分文字列を全探索
+for tmp_S_len in range(1,len(S)+1):
+    for first_idx in range(len(S) - tmp_S_len + 1):
+        tmp_S = S[first_idx:first_idx + tmp_S_len]
+
+        ACGT_Flg = True
+        # 部分文字列がACGT文字列かチェック
+        for s in tmp_S:
+            if s in ["A","C","G","T"]:
+                continue
+            else:
+                ACGT_Flg = False
+                break
+ 
+        if ACGT_Flg:
+            ACGT_len_max = max(ACGT_len_max,tmp_S_len)
+
+print(ACGT_len_max)

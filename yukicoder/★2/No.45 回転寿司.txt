@@ -1,0 +1,13 @@
+N = int(input())
+v = [int(i) for i in input().split()]
+
+dp = [0 for i in range(N)] # DPテーブルの作成
+
+if N == 1:
+    dp[0] = v[0]
+else:
+    dp[0] = v[0]
+    dp[1] = max(dp[0], v[1])
+    for k in range(2,N):
+        dp[k] = max(dp[k-1], dp[k-2]+v[k])
+print(dp[N-1])

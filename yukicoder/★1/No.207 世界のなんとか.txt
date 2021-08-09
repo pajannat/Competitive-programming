@@ -1,0 +1,10 @@
+A, B = map(int, input().split())
+for i in range(A, B+1):
+	if (i % 3) == 0:
+		print(i)
+	else:
+		i_str = str(i)
+		for j in range(len(i_str)):
+			if i_str[j] == "3":
+				print(i)
+				break;

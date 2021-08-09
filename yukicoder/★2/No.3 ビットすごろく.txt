@@ -1,0 +1,57 @@
+N = int(input())
+
+# 10進数を2進数に変換
+def BitTrans(n):
+    i = 0
+    bit = []
+    while n > 0:
+    	bit.insert(0, n % 2)
+    	n = int(n / 2)
+    	i += 1
+    return bit
+
+# 2進数表記に含まれる1の数を数える
+def BitCount(bit):
+	cnt = 0
+	for i in bit:
+		cnt += i
+	return cnt
+
+list = []
+cnt = 0
+for i in range(1,N):
+	if (i - BitCount(BitTrans(i))) > 0:
+		list.append([i,(i - BitCount(BitTrans(i)))])
+		cnt += 1
+	if (i + BitCount(BitTrans(i))) < N + 1:
+		list.append([i, (i + BitCount(BitTrans(i)))])
+		cnt += 1
+
+
+from collections import deque
+
+n, m = N, cnt
+
+graph = [[] for _ in range(n+1)]
+
+for j in range(m):
+ a, b =  list[j][0], list[j][1]
+ graph[a].append(b)
+
+dist = [-1] * (n+1)
+dist[0] = 0
+dist[1] = 1
+
+d = deque()
+d.append(1)
+
+while d:
+ v = d.popleft()
+ for i in graph[v]:
+   if dist[i] != -1:
+     continue
+   dist[i] = dist[v] + 1
+   d.append(i)
+
+ans = dist[1:]
+print(ans[-1])

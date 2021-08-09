@@ -1,0 +1,7 @@
+A = sorted(input())
+B = sorted(input())
+
+if A ==B:
+	print("YES")
+else:
+	print("NO")

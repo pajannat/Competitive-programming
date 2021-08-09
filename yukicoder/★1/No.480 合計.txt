@@ -1,0 +1,6 @@
+first = input()			# 標準入力受け取り
+first_int = int(first)	# 入力文字列をint型に変換
+sum = 0					# 合計値
+for i in range(first_int):
+    sum += (i + 1)
+print(sum)

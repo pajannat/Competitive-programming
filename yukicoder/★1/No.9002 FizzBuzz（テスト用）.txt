@@ -1,0 +1,22 @@
+# 標準入力受け取り
+first = input()
+
+# 入力文字列をint型に変換
+first_int = int(first)
+
+# 3の倍数であれば Fizz、
+# 5の倍数であれば Buzz、
+# それ以外であれば 入力値を出力
+def FizzBuzz (N):
+	for i in range(1,N+1):
+		if (i % 3 == 0) and (i % 5 == 0):
+			print('FizzBuzz')
+		elif (i % 3 == 0):
+			print('Fizz')
+		elif (i % 5 == 0):
+			print('Buzz')
+		else:
+			print(i)
+
+# FizzBazz関数に入力文字列(int型)を入力
+FizzBuzz (first_int)

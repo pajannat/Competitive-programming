@@ -1,0 +1,14 @@
+def main():
+    from sys import stdin
+    input = stdin.readline
+ 
+    list_A = [int(i) for i in input().split()]
+    list_A = sorted(list_A)
+ 
+    if list_A[2]-list_A[1] == list_A[1] - list_A[0]:
+        print("Yes")
+    else:
+        print("No")
+ 
+if __name__ == '__main__':
+    main()

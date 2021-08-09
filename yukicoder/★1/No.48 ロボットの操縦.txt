@@ -1,0 +1,30 @@
+import math
+X = int(input())
+Y = int(input())
+L = int(input())
+
+cnt = 0
+
+if X == 0:
+	if Y == 0:
+		cnt = 0
+	elif Y > 0:
+		cnt += math.ceil(abs(Y)/L)
+	else:
+		cnt += math.ceil(abs(Y)/L) + 2
+elif X > 0:
+	if Y == 0:
+		cnt += math.ceil(abs(X)/L) + 1
+	elif Y > 0:
+		cnt += math.ceil(abs(X)/L) + math.ceil(abs(Y)/L) + 1
+	else:
+		cnt += math.ceil(abs(X)/L) + math.ceil(abs(Y)/L) + 2
+else:
+	if Y == 0:
+		cnt += math.ceil(abs(X)/L) + 1
+	elif Y > 0:
+		cnt += math.ceil(abs(X)/L) + math.ceil(abs(Y)/L) + 1
+	else:
+		cnt += math.ceil(abs(X)/L)+ math.ceil(abs(Y)/L) + 2
+
+print(cnt)

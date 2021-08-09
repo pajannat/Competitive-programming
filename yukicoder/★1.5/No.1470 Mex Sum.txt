@@ -1,0 +1,14 @@
+N = int(input())
+A = [int(i) for i in input().split()]
+
+ONE = A.count(1)
+TWO = A.count(2)
+OTHER = len(A) -ONE -TWO
+
+mex_1 = 1*(TWO*(TWO-1)/2 + OTHER*(OTHER-1)/2 +TWO*OTHER)
+mex_2 = 2*(ONE*(ONE-1)/2 + ONE*OTHER) 
+mex_3 = 3*(ONE*TWO)
+
+sum = int(mex_1 + mex_2 + mex_3)
+
+print(sum)

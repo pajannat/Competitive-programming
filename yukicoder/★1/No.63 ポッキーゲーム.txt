@@ -1,0 +1,8 @@
+import math
+
+L, K = map(int,input().split())
+
+# ハルカちゃんが齧る回数
+n = math.ceil(L/(2*K))
+
+print(K*(n-1))

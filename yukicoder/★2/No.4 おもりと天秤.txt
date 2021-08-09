@@ -1,0 +1,27 @@
+N = int(input())
+W = sorted([int(i) for i in input().split()])
+
+dp = [[0]*(10001) for j in range(N)] # DPテーブルの作成
+sum_W = sum(W)
+
+if(sum_W % 2 == 1):
+	print("impossible")
+	exit()
+
+dp[0][W[0]] = 1
+for i in range(1,N):
+    for j in range(10001):
+        dp[i][j] = dp[i-1][j]	# i-1番目までにどの重さを作れたかをi番目の表にコピー
+    for j in range(10001):
+        if(dp[i-1][j] == 1):
+            if(j+W[i]>10001-1):
+                break
+            dp[i][(j+W[i])] = 1	# これまでに作れた重さ+i番目のおもりの重さも作れる
+    dp[i][W[i]] = 1				# i番目のおもりを使った重さは作れる
+
+# 以上の操作でdp[N-1]に作れる重さの表が完成する
+
+if(dp[N-1][int(sum_W/2)] == 1):
+	print("possible")
+else:
+	print("impossible")

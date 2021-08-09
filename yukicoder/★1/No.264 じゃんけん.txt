@@ -1,0 +1,7 @@
+N, K = map(int, input().split())
+if ((N-K+3) % 3) == 0:
+	print("Drew")
+elif ((N-K+3) % 3) == 1:
+	print("Lost")
+elif ((N-K+3) % 3) == 2:
+	print("Won")

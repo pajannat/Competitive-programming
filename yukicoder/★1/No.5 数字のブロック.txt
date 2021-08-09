@@ -1,0 +1,20 @@
+# 箱の幅
+L = int(input())
+
+# ブロックの数
+N = int(input())
+
+# ブロックの幅Wを昇順に格納
+W = [int(i) for i in input().split()]
+W = sorted(W)
+
+# カウント
+cnt = 0
+
+for i in range(N):
+	L -= W[i]
+	if L < 0:
+		break;
+	cnt += 1
+
+print(cnt)

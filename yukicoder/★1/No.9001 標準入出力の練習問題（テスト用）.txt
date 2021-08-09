@@ -1,0 +1,16 @@
+# 標準入力から一行分を読み出し、文字列として格納する。
+first = input()
+
+# 読み込んだ文字列をスペースで分割する
+split_first = first.split()
+
+# それぞれをint型に変換する
+A = int(split_first[0])
+B = int(split_first[1])
+
+#2行目を読み込む
+S = input()
+
+# 標準出力に書き出す
+# カンマで区切りスペースで分割
+print(A + B, S)

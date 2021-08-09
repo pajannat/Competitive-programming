@@ -1,0 +1,8 @@
+# 標準入力から一行読み出し、int型で格納する。
+first = int(input())
+
+# 2行目以降を読み込んでリストAに格納
+A = [int(input()) for i in range(first)]
+
+# 標準出力にリストAの合計値を書き出す
+print(sum(A))

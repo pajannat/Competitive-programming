@@ -1,0 +1,11 @@
+S = input()
+
+# 合計値
+sum = 0
+
+# 文字を数値と比較、合計値に加算
+for i in range(len(S)):
+	for j in range(10):
+		if S[i] == str(j):
+			sum += int(S[i])
+print(sum)
