@@ -1,0 +1,48 @@
+"""
+N 頂点数
+u 頂点の番号
+k uの出次数
+vk uに隣接する頂点の番号
+
+N
+u k v1 v2 ... vk
+
+
+6
+1 2 2 3
+2 2 3 4
+3 1 5
+4 1 6
+5 1 6
+6 0
+"""
+
+from sys import setrecursionlimit
+setrecursionlimit(10000000)  # RecursionError対策
+
+N = int(input())
+adj = [[] for i in range(N+1)]
+for n in range(1,N+1):
+    V = list(map(int, input().split()))
+    for v in V[2:]: # u,k,v1,v2,...
+        adj[n].append(v) 
+        # ↓無向グラフの場合は#をとる
+        # adj[v].append(n)
+d = [0] * (N+1) # 発見時刻
+f = [0] * (N+1) # 完了時刻
+
+def dfs(v, t):
+    t+=1 # 発見したらインクリメント
+    d[v] = t
+    for next in adj[v]: # 頂点vに隣接するv1,v2,...を探索
+        if d[next] == 0: # 未発見なら
+            t = dfs(next, t)
+    t+=1 # 完了してもインクリメント
+    f[v] = t
+    return t
+
+t = 0
+for n in range(1,N+1):
+    if d[n]==0: # 未発見なら
+        t = dfs(n,t)
+    print (n,d[n],f[n])

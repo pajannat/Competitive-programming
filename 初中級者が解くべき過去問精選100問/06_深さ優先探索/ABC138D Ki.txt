@@ -1,0 +1,50 @@
+# 方針
+# 簡単のため、一直線にノードが並んでいる場合を考える
+# V = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+# (p, x) = (2, 1), (4, 1), (6, 1)
+# ↓
+# ans: V = [0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 3]
+# p = 2, 4, 6を境に、以降のVの値が増えている。
+# この法則を利用すれば、一周の計算でVを計算できる
+def main():
+    from sys import stdin
+    input = stdin.readline
+
+    import sys
+    sys.setrecursionlimit(10**7)
+
+    N, Q = map(int, input().split())
+    link = [[] for _ in range(N+1)]
+    for n in range(N-1):
+        a, b = map(int, input().split())
+        link[a].append(b)
+        link[b].append(a)
+
+    # 0番目はダミー
+    V = [0]*(N+1)
+    sousa = []
+    for q in range(Q):
+        p, x = map(int, input().split())
+        sousa.append((p, x))
+
+    # V[p]にあらかじめxを配置
+    for p, x in sousa:
+        V[p] += x
+
+    def dfs(cur, parent, acc):
+        # 現在のノードに加算
+        V[cur] += acc
+        # 子ノードに加算
+        for j in link[cur]:
+            if j != parent:
+                dfs(j, cur, V[cur])
+
+    cur = 1
+    parent = 0
+    acc = 0
+    dfs(cur, parent, acc)
+    V = [str(i) for i in V]
+    print(" ".join(V[1:]))
+
+if __name__ == '__main__':
+    main()

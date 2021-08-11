@@ -1,0 +1,45 @@
+def main():
+    from sys import stdin
+    input = stdin.readline
+
+    import sys
+    sys.setrecursionlimit(10**7)
+
+    dxdy = ((0,1),(0,-1),(1,0),(-1,0),(-1,1),(1,-1),(1,1),(-1,-1))
+    ans = []
+    while(1):
+        W, H = map(int, input().split())
+        if (W==0 and H==0):
+            break
+        mp = []
+        for h in range(H):
+            line = [-int(i) for i in input().split()]
+            mp.append(line)
+        
+        def dfs(h,w):
+            # mp[h][w]に何番目に見つけた陸かを記録
+            mp[h][w] = cnt_num
+            # 現在地(h,w)の周囲を探索
+            for dx, dy in dxdy:
+                nw = w + dx
+                nh = h + dy
+                # 移動先の(nh, nw)はmapの範囲内か?
+                if (0 <= nh < H and 0 <= nw < W):
+                    # 移動先の(nh, nw)は陸か?
+                    if (mp[nh][nw] == -1):
+                        dfs(nh, nw)
+        
+        cnt_num = 0 # 何番目に見つけた陸か?
+        for h in range(H):
+            for w in range(W):
+                # (h, w)が陸の場合、周囲を探索
+                if mp[h][w] == -1:
+                    cnt_num += 1
+                    dfs(h, w)
+        ans.append(cnt_num)
+
+    for a in ans:
+        print(a)
+        
+if __name__ == '__main__':
+    main()

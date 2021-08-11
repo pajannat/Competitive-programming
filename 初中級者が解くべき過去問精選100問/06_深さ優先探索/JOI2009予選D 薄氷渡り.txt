@@ -1,0 +1,46 @@
+def main():
+    from sys import stdin
+    input = stdin.readline
+
+    import sys
+    sys.setrecursionlimit(10**7)
+
+    dxdy = ((0,1),(0,-1),(1,0),(-1,0))
+    M = int(input())
+    N = int(input())
+
+    # mpに行列を格納。周りは0で囲む。
+    mp = []
+    mp.append([0]*(M+2))
+    for n in range(N):
+        line = list(map(int, input().split()))
+        mp.append([0]+line+[0])
+    mp.append([0]*(M+2))
+
+    ans = 0
+    def dfs(n, m, d):
+        nonlocal ans
+        # mp[n][m] == 0で氷なしの場合は終了
+        if mp[n][m] == 0:
+            return
+        if ans < d:
+            ans = d
+        
+        # 同じ区画を通らないように、現在地 mp[n][m] == 0
+        mp[n][m] = 0
+        for dx, dy in dxdy:
+            next_n = n + dy
+            next_m = m + dx
+            dfs(next_n, next_m, d+1)
+        # mp[n][m]スタートの探索終了時に、mp[n][m] == 1に戻す
+        mp[n][m] = 1
+
+    for n in range(1, N+1):
+        for m in range(1, M+1):
+            d = 1
+            dfs(n, m, d)
+    
+    print(ans)
+
+if __name__ == '__main__':
+    main()
