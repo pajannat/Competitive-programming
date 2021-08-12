@@ -1,0 +1,56 @@
+def main():
+    from sys import stdin
+    input = stdin.readline
+
+    import sys
+    import queue
+    input = sys.stdin.readline
+    sys.setrecursionlimit(int(1E+7))
+    dxdy_odd = ((-1,0), (1,0), (0,-1), (0,1), (1,-1), (1,1))
+    dxdy_even = ((-1,0), (1,0), (0,-1), (0,1), (-1,-1), (-1,1))
+
+    W, H = map(int, input().split())
+
+    mp = []
+    mp.append([0]*(W+2))
+    for h in range(H):
+        s = list(map(int,input().split()))
+        mp.append([0]+s+[0])
+    mp.append([0]*(W+2))
+
+    # (H+2)×(W+2)の訪問リストを用意
+    visited = [[0]*(W+2) for _ in range(H+2)]
+
+    cnt = 0
+    q = queue.Queue()
+    # スタート地点をenqueue
+    q.put((0, 0))
+    while(not q.empty()):
+        y, x = q.get()
+        # 訪問済みの場合は無視する
+        if visited[y][x] == 1:
+            continue
+        else:
+            # 訪問フラグを立てる
+            visited[y][x] = 1
+            # 偶奇でdxdyの切り替え
+            if y%2 == 0:
+                dxdy = dxdy_even
+            else:
+                dxdy = dxdy_odd
+            # 周囲の探索
+            for dx, dy in dxdy:
+                # 範囲内におさまっているか
+                if (0<= x+dx < W+2) and (0<= y+dy < H+2):
+                    # 未訪問かつ通行可能か
+                    if visited[y+dy][x+dx] == 0 and mp[y+dy][x+dx] == 0:
+                        # enqueue
+                        q.put((y+dy, x+dx))
+                    # 壁にぶつかった場合はcnt+1
+                    if mp[y+dy][x+dx] == 1:
+                        cnt += 1
+                    
+    print(cnt)
+
+if __name__ == '__main__':
+    main()

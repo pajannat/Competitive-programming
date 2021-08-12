@@ -1,0 +1,60 @@
+def main():
+    from sys import stdin
+    input = stdin.readline
+
+    from collections import deque
+    dxdy = ((-1,0), (1,0), (0,-1), (0,1))
+
+    def solve(W,H,ver,hor):
+        dist = [[0]*W for _ in range(H)]
+        dist[0][0] = 1
+        q = deque()
+        # スタート地点をenqueue
+        q.append((0, 0))
+        while(q):
+            y, x = q.popleft()
+            # ゴールにたどり着いたら終了
+            if y==H-1 and x==W-1:
+                break
+            else:
+                # 上下左右の探索
+                for dx, dy in dxdy:
+                    # 移動方向に壁があるか
+                    if (dx==-1 and ver[y][x]==0) or (dx==1 and ver[y][x+1] == 0) or (dy==-1 and hor[y][x]==0) or (dy==1 and hor[y+1][x]==0):
+                        # 未訪問か
+                        if (dist[y+dy][x+dx] == 0):
+                            # 距離を+1してenqueue
+                            q.append((y+dy, x+dx))
+                            dist[y+dy][x+dx] = dist[y][x] + 1
+        return dist[H-1][W-1]
+
+    ans = []
+    while(1):
+        W, H = map(int,input().split())
+        if W==0 and H==0:
+            break
+        # 縦向きの壁(左右隣接ブロックの間の壁)
+        # ver[y][x]==1はマス(x,y)の左(dx=-1)に壁ありを示す
+        ver = []
+        # 横向きの壁(上下隣接ブロックの間の壁)
+        # hor[y][x]==1はマス(x,y)の上(dy=-1)に壁ありを示す
+        hor = []
+        # 一番上の壁
+        hor.append([1]*W)
+        for i in range(2*H-1):
+            bar = list(map(int,input().split()))
+            if i%2==0:
+                # 一番左と右にも壁を設置
+                ver.append([1]+bar+[1])
+            else:
+                hor.append(bar)
+        # 一番下の壁
+        hor.append([1]*(W+1))
+
+        ans.append(solve(W,H,ver,hor))
+    
+    for a in ans:
+        print(a)
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,51 @@
+def main():
+    from sys import stdin
+    input = stdin.readline
+
+    from collections import deque
+    dxdy = ((-1, 0), (1, 0), (0, -1), (0, 1))
+    H, W, N = map(int, input().split())
+
+    maze = []
+    for h in range(H):
+        s = input().rstrip()
+        maze.append(s)
+
+    
+    def solve(sx, sy, goal):
+        dist = [[-1]*W for _ in range(H)]
+        dist[sy][sx] = 0
+        q = deque()
+        # スタート地点をenqueue
+        q.append((sy, sx))
+        while(q):
+            y, x = q.popleft()
+            # ゴールにたどり着いたら終了
+            if maze[y][x] == goal:
+                break
+            else:
+                # 上下左右の探索
+                for dx, dy in dxdy:
+                    # 範囲内におさまっているか
+                    if (0 <= x+dx < W) and (0 <= y+dy < H):
+                        # 未訪問かつ通行可能か
+                        if (dist[y+dy][x+dx] == -1) and (maze[y+dy][x+dx] != 'X'):
+                            # 距離を+1してenqueue
+                            q.append((y+dy, x+dx))
+                            dist[y+dy][x+dx] = dist[y][x] + 1
+        return x, y, dist[y][x]
+    
+    for i in range(H):
+        for j in range(W):
+            if maze[i][j] == 'S':
+                sx = j
+                sy = i
+
+    ans = 0
+    for n in range(1, N+1):
+        sx, sy, d = solve(sx, sy, str(n))
+        ans += d
+    print(ans)
+
+if __name__ == '__main__':
+    main()

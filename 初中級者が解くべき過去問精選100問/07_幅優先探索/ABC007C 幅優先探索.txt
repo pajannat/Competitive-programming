@@ -1,0 +1,51 @@
+def main():
+    from sys import stdin
+    input = stdin.readline
+
+    import sys
+    import queue
+    input = sys.stdin.readline
+    sys.setrecursionlimit(int(1E+7))
+    dxdy = ((-1, 0), (1, 0), (0, -1), (0, 1))
+
+    R, C = map(int,input().split())
+    sy, sx = map(int,input().split())
+    gy, gx = map(int,input().split())
+
+    maze = []
+    for r in range(R):
+        s = input().rstrip()
+        maze.append(s)
+
+    # R×Cの訪問リストを用意
+    visited = [ [0]*C for _ in range(R)]
+    
+    q = queue.Queue()
+
+    # スタート地点をenqueue
+    q.put((sy-1, sx-1, 0))
+    while(not q.empty()):
+        y, x, d = q.get()
+        # ゴールにたどり着いたら終了
+        if (x == gx-1) and (y == gy-1):
+            ans = d
+            break
+        # 訪問済みの場合は無視する
+        if visited[y][x] == 1:
+            continue
+        else:
+            # 訪問フラグを立てる
+            visited[y][x] = 1
+            # 上下左右の探索
+            for dx, dy in dxdy:
+                # 範囲内におさまっているか
+                if (0<= x+dx < C) and (0<= y+dy < R):
+                    # 未訪問かつ通行可能か
+                    if visited[y+dy][x+dx] == 0 and maze[y+dy][x+dx]=='.':
+                        # 距離を+1してenqueue
+                        q.put((y+dy, x+dx, d+1))
+
+    print(ans)
+
+if __name__ == '__main__':
+    main()
