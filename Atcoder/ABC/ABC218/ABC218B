@@ -1,0 +1,17 @@
+def main():
+    from sys import stdin
+    input = stdin.readline
+
+    S = "abcdefghijklmnopqrstuvwxyz"
+
+    A = list(map(int, input().split()))
+    
+    ans = ""
+
+    for q in A:
+        ans += S[q-1]
+    
+    print(ans)
+
+if __name__ == '__main__':
+    main()

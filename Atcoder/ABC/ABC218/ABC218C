@@ -1,0 +1,66 @@
+def main():
+    from sys import stdin
+    input = stdin.readline
+ 
+    import numpy as np
+ 
+    # 90度回転
+    def rot(S):
+        return list(zip(*S[::-1]))
+ 
+    # 空白行を除去
+    def rmv_blank_row(S):
+        # "."のみの行のindexのlist
+        rmv_list = []
+        # "."のみの行を前から探索。"#"を含んでいる行がきたらbreak
+        for i in range(N):
+            if "#" not in S[i]:
+                rmv_list.append(i)
+            else:
+                break
+        # "."のみの行を後ろから探索。"#"を含んでいる行がきたらbreak
+        for i in reversed(range(N)):
+            if "#" not in S[i]:
+                rmv_list.append(i)
+            else:
+                break
+        rmv_list.sort()
+        # 前から行削除するとindexがずれるので、後ろから削除
+        for i in rmv_list[::-1]:
+            S.pop(i)
+        return S
+ 
+    N = int(input())
+ 
+    S = []
+    T = []
+ 
+    for _ in range(N):
+        S.append(list(input().rstrip()))
+ 
+    for _ in range(N):
+        T.append(list(input().rstrip()))
+ 
+    S = rmv_blank_row(S)
+    S = rmv_blank_row(rot(S))
+ 
+    T = rmv_blank_row(T)
+    T = rmv_blank_row(rot(T))
+ 
+    S = np.array(S)
+    T = np.array(T)
+ 
+    flg = False # S, Tを回転させて一致することがあるか？
+    for i in range(4):
+        T = np.rot90(T)
+        flg_tmp = True # Sと回転したTのすべての行が一致するか？
+        if np.array_equal(S, T):
+            flg = True
+    
+    if flg:
+        print("Yes")
+    else:
+        print("No")
+ 
+if __name__ == '__main__':
+    main()
