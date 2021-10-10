@@ -21,9 +21,9 @@ def main():
         # 0, 1, 2, ..., M 列目を順に計算していく
         for j in range(M):
             if (S[i] == T[j]):
-                dp[i+1][j+1] = max(dp[i+1][j], dp[i][j+1], dp[i][j]+1)
+                dp[i+1][j+1] = dp[i][j]+1
             else:
-                dp[i+1][j+1] = max(dp[i+1][j], dp[i][j+1], dp[i][j])
+                dp[i+1][j+1] = max(dp[i+1][j], dp[i][j+1])
 
     # 右下のマスの値を出力。
     print(dp[-1][-1])
