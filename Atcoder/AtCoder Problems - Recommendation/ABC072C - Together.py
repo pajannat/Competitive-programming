@@ -9,30 +9,19 @@ def main():
     D = {}
     for a in A:
         if a not in D.keys():
-            D.update({a : 1})
-
-            if a-1 not in D.keys():
-                D.update({a-1 : 1})
-            else:
-                D.update({a-1 : D[a-1]+1})
-
-            if a+1 not in D.keys():
-                D.update({a+1 : 1})
-            else:
-                D.update({a+1 : D[a+1]+1})
-
+            D[a] = 1
         else:
-            D.update({a : D[a]+1})
+            D[a] += 1
 
-            if a-1 not in D.keys():
-                D.update({a-1 : 1})
-            else:
-                D.update({a-1 : D[a-1]+1})
+        if a-1 not in D.keys():
+            D[a-1] = 1
+        else:
+            D[a-1] += 1
 
-            if a+1 not in D.keys():
-                D.update({a+1 : 1})
-            else:
-                D.update({a+1 : D[a+1]+1})
+        if a+1 not in D.keys():
+            D[a+1] = 1
+        else:
+            D[a+1] += 1
 
     ans = - 1
     for d in D:
