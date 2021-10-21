@@ -51,8 +51,7 @@ def main():
     dfs(d)
 
     # 答えを出力
-    for i in range(N):
-        print(dist[i])
+    print(max(dist))
 
 if __name__ == '__main__':
     main()
