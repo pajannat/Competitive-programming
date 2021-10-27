@@ -53,8 +53,10 @@ def main():
     AB = [map(int, input().split()) for i in range(M)]
 
     uf = UnionFind(N)
+    # グループの数をcntとする
     cnt = N
     for a, b in AB:
+        # 異なるグループに属する頂点を併合するとグループ数が1減る
         if not uf.issame(a, b):
             cnt -= 1
         uf.unite(a, b)
