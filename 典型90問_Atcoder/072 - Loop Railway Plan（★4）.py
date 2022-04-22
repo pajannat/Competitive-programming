@@ -30,7 +30,8 @@ def main():
         # push
         kyori = -1
         dist[sh][sw] = cnt
-        # 再帰処理
+        # 処理
+        # 周りを探索。最大となるループの大きさを求める。
         for dh, dw in dxdy:
             h = sh + dh
             w = sw + dw
