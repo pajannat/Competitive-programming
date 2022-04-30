@@ -2,11 +2,11 @@
 import re 
 
 # 調べたい文字列 
-S = input().rstrip()
+S = input().rstrip()  
 # 調べる正規表現 
-reg = r'algo(?!rithm)(?!method)[a-z]{5,}'
+reg = r'^\d{3}-\d{4}$' 
 
-# マッチした位置が格納される (存在しなければ null) 
+# マッチした文字列情報が格納される (存在しなければ null)  
 search = re.search(reg, S)
 if search:
     # "Yes" と表示される 
