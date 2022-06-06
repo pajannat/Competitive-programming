@@ -19,7 +19,7 @@ def main():
         # nilをvにつなぐ
         nil.nex = v
 
-    # 連結リストへ先頭への要素の挿入
+    # 連結リストへ先頭から要素の取り出し
     def pophead(v):
         # 先頭ノードを取得する
         head = nil.nex
