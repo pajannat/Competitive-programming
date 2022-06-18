@@ -28,14 +28,18 @@ def main():
         f[v] = t
         return t
     
-    # 連結成分の個数
+    # 処理
+    # 連結成分の個数 cnt
     cnt = 0
+    # 頂点iを全探索
     for i in range(N):
-        # 探索済みの頂点はスキップ
+        # 未訪問の頂点iを発見した場合
         if d[i] == 0:
             cnt += 1
+            # 頂点iからDFSして, 連なる成分を発見済みとする
             dfs(i, 0)
     
+    # 答えを出力
     print(cnt)
 
 
