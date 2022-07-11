@@ -1,0 +1,166 @@
+import sys
+import math
+
+# Complete the hackathon before your opponent by following the principles of Green IT
+
+# game loop
+while True:
+    game_phase = input()  # can be MOVE, GIVE_CARD, THROW_CARD, PLAY_CARD or RELEASE
+    # フィールド上のリリース待ちのアプリケーション数
+    applications_count = int(input())
+    # 各アプリのリリースに必要なスキル情報
+    applications_info = []
+    for i in range(applications_count):
+        inputs = input().split()
+        applications_info.append(inputs)
+        object_type = inputs[0]
+        _id = int(inputs[1])
+        training_needed = int(inputs[2])  # number of TRAINING skills needed to release this application
+        coding_needed = int(inputs[3])  # number of CODING skills needed to release this application
+        daily_routine_needed = int(inputs[4])  # number of DAILY_ROUTINE skills needed to release this application
+        task_prioritization_needed = int(inputs[5])  # number of TASK_PRIORITIZATION skills needed to release this application
+        architecture_study_needed = int(inputs[6])  # number of ARCHITECTURE_STUDY skills needed to release this application
+        continuous_delivery_needed = int(inputs[7])  # number of CONTINUOUS_DELIVERY skills needed to release this application
+        code_review_needed = int(inputs[8])  # number of CODE_REVIEW skills needed to release this application
+        refactoring_needed = int(inputs[9])  # number of REFACTORING skills needed to release this application
+    for i in range(2):
+        # player_location: id of the zone in which the player is located
+        # player_permanent_daily_routine_cards: number of DAILY_ROUTINE the player has played. It allows them to take cards from the adjacent zones
+        # player_permanent_architecture_study_cards: number of ARCHITECTURE_STUDY the player has played. It allows them to draw more cards
+        player_location, player_score, player_permanent_daily_routine_cards, player_permanent_architecture_study_cards = [int(j) for j in input().split()]
+    card_locations_count = int(input())
+    # カード情報
+    card_info = []
+    for i in range(card_locations_count):
+        inputs = input().split()
+        card_info.append(inputs)
+        cards_location = inputs[0]  # the location of the card list. It can be HAND, DRAW, DISCARD or OPPONENT_CARDS (AUTOMATED and OPPONENT_AUTOMATED will appear in later leagues)
+        training_cards_count = int(inputs[1])
+        coding_cards_count = int(inputs[2])
+        daily_routine_cards_count = int(inputs[3])
+        task_prioritization_cards_count = int(inputs[4])
+        architecture_study_cards_count = int(inputs[5])
+        continuous_delivery_cards_count = int(inputs[6])
+        code_review_cards_count = int(inputs[7])
+        refactoring_cards_count = int(inputs[8])
+        bonus_cards_count = int(inputs[9])
+        technical_debt_cards_count = int(inputs[10])
+    possible_moves_count = int(input())
+    # 今回可能な行動
+    possible_move_info = []
+    for i in range(possible_moves_count):
+        possible_move = input()
+        possible_move_info.append(possible_move)
+
+    # Write an action using print
+    # To debug: print("Debug messages...", file=sys.stderr, flush=True)
+
+
+    # In the first league: RANDOM | MOVE <zoneId> | RELEASE <applicationId> | WAIT; In later leagues: | GIVE <cardType> | THROW <cardType> | TRAINING | CODING | DAILY_ROUTINE | TASK_PRIORITIZATION <cardTypeToThrow> <cardTypeToTake> | ARCHITECTURE_STUDY | CONTINUOUS_DELIVERY <cardTypeToAutomate> | CODE_REVIEW | REFACTORING;
+
+    # RELEASEできるときはRELEASE. それ以外はRANDOM.
+    # move = "RANDOM"
+
+    # RELEASE FASE
+    if game_phase == "RELEASE":
+        move = "RANDOM"
+        if player_score == 4:
+            # RELEASE_idxのアプリがリリース可能なとき
+            for s in possible_move_info:
+                if "RELEASE" in s:
+                    move = s
+        else:
+            RELEASE_app_str = "RELEASE " + RELEASE_app_idx
+            print(f"RELEASE_app_str : {RELEASE_app_str}",  file=sys.stderr, flush=True)
+
+            # RELEASE_idxのアプリがリリース可能なとき
+            if RELEASE_app_str in possible_move_info:
+                move = RELEASE_app_str
+            else:
+                move = "WAIT"
+
+    # MOVE FASE
+    elif game_phase == "MOVE":
+        RELEASE_app_idx = "-1"
+        # 一つ隣に移動を初期値とする
+        move = possible_move_info[0]
+        # 移動先を発見したかどうかのflg
+        find_flg = False
+
+        # 5つ目のアプリリリース向け
+        if player_score == 4:
+
+            # 各アプリに必要なスキルを調べる
+            for app in applications_info:
+                # カード情報を全探索
+                for card in card_info:
+                    # 手持ちのカード以外の場合はスキップ
+                    if card[0] != 'HAND':
+                        continue
+
+                    want_location = []
+                    want_quantity = 0
+                    for i, skill in enumerate(app[2:]):
+                        card_i = i + 1
+
+                        if skill > 2*card[card_i]:
+                            # アプリリリースに足りないスキル種と量を記録
+                            want_quantity += (int(skill) - 2*int(card[card_i]))
+                            want_location.append(card_i-1)
+                    
+                    # BONUSカード(優良スキル)で補えないか考慮
+                    want_quantity = max(0, want_quantity - int(card[9]))
+
+                    # 1回の移動, DRAW(優良スキル)でアプリがリリースできるとき.
+                    # まだ find_flg = Falseのままのとき
+                    if want_quantity <= 2 and find_flg == False:
+                        for loc in want_location:
+                            MOVE_idx = loc
+                            MOVE_str = 'MOVE ' + str(MOVE_idx)
+                            # 移動先が見つかればbreak
+                            if MOVE_str in possible_move_info:
+                                move = MOVE_str
+                                RELEASE_app_idx = app[1]
+                                break
+        
+        # 1-4つ目のアプリリース向け
+        else:
+
+            # 各アプリに必要なスキルを調べる
+            for app in applications_info:
+                # カード情報を全探索
+                for card in card_info:
+                    # 手持ちのカード以外の場合はスキップ
+                    if card[0] != 'HAND':
+                        continue
+
+                    want_location = []
+                    want_quantity = 0
+                    for i, skill in enumerate(app[2:]):
+                        card_i = i + 1
+
+                        if skill > 2*card[card_i]:
+                            # アプリリリースに足りないスキル種と量を記録
+                            want_quantity += (int(skill) - 2*int(card[card_i]))
+                            want_location.append(card_i-1)
+                    
+                    # BONUSカードで補えないか考慮
+                    want_quantity = max(0, want_quantity - 2*int(card[9]))
+
+                    # 1回の移動, DRAW(優良スキル)でアプリがリリースできるとき.
+                    # まだ find_flg = Falseのままのとき
+                    if want_quantity <= 4 and find_flg == False:
+                        for loc in want_location:
+                            MOVE_idx = loc
+                            MOVE_str = 'MOVE ' + str(MOVE_idx)
+                            # 移動先が見つかればbreak
+                            if MOVE_str in possible_move_info:
+                                move = MOVE_str
+                                RELEASE_app_idx = app[1]
+                                break
+
+    print(f"score:{player_score}, location:{player_location}, possible_move_info: {possible_move_info}", file=sys.stderr, flush=True)
+    print(f"applications_info : {applications_info}",  file=sys.stderr, flush=True)
+    print(f"card_info : {card_info}",  file=sys.stderr, flush=True)
+
+    print(move)
