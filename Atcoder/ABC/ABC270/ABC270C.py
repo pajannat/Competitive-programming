@@ -33,7 +33,7 @@ def main():
             # 経路を出力
             print(*path)
             # 探索を終了
-            exit
+            exit()
         # 頂点vに隣接するv1,v2,...を探索
         for next in adj[v]:
             # 未発見なら
