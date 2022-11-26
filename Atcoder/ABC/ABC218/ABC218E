@@ -2,7 +2,7 @@
 class UnionFind():
     # 初期化
     def __init__(self, n):
-        self.par = [-1] * n
+        self.par = [-1] * (n+1)
         for i in range(n):
             self.par[i] = i
         self.siz = [1] * n
@@ -44,7 +44,7 @@ graph_edges = []    # graph_edges[i]：i 番目の辺情報
 leng_sum = 0 # 辺の重みの総和
 for i in range(M):
     u, v, w = map(int, input().split())
-    graph_edges.append([u-1, v-1, w])
+    graph_edges.append([u, v, w])
     leng_sum += w
 
 # 辺情報を重みの昇順にソートする
