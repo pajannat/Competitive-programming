@@ -6,7 +6,7 @@ def main():
     N, K, D = map(int, input().split())
     A = list(map(int, input().split()))
 
-    # K+1 × D の行列をN+1 面用意する (N × K+1 × D)
+    # K+1 × D の行列をN+1 面用意する (N+1 × K+1 × D)
     # 配列全体を -1 に初期化しておく
     dp = [ [[-1]*D for _ in range(K+1)] for _ in range(N+1)]
 
