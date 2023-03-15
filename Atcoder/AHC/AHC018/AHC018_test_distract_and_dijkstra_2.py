@@ -123,10 +123,6 @@ class Solver:
             res = self.destruct_test(y, x, power)
             if res == Response.BROKEN:
                 BROKEN_pos.append(Pos(y, x))
-                # self.house_pos.append(Pos(y, x))
-        # for pos in BROKEN_pos:
-            # print(f"test_BROKEN_pos={pos.y, pos.x}", file=sys.stderr)
-        # self.house_pos_org = self.house_pos[:]
         return BROKEN_pos
 
     def solve(self):
@@ -316,11 +312,12 @@ def Manhattan_dist(y1, x1, y2, x2):
     z2 = x2 + y2
     w1 = x1 - y1
     w2 = x2 - y2
-    dist = max(abs(z1 - z2), abs(w1 - w2))
+    # dist = max(abs(z1 - z2), abs(w1 - w2))
+    dist = abs(y2-y1) + abs(x2-x1)
     return dist
 
 def min_Manhattan_dist_source(house_pos_i, source_pos):
-    min_dist = 1000 # N=200 より, マンハッタン距離は400以下
+    min_dist = 100000 # N=200 より, マンハッタン距離は400以下
     min_dist_source = source_pos[0]
     y1 = house_pos_i.y
     x1 = house_pos_i.x
@@ -711,13 +708,22 @@ def dijkstra(matrix_list, start, terminal):
     return distance[terminal], path
 
 
-def pos2Gidx(pos, grid_num, grid_interval):
-    Gidx = grid_num * (pos.y//grid_interval) + 1 * (pos.x//grid_interval)
+# def pos2Gidx(pos, grid_num, grid_interval):
+#     Gidx = grid_num * (pos.y//grid_interval) + 1 * (pos.x//grid_interval)
+#     return Gidx
+def pos2Gidx(pos, grid_start_y, grid_start_x, grid_num_y, grid_num_x, grid_interval_y, grid_interval_x):
+    Gidx = grid_num_x * ((pos.y-grid_start_y)//grid_interval_y) + 1 * ((pos.x-grid_start_x)//grid_interval_x)
     return Gidx
 
-def Gidx2pos(Gidx, grid_num, grid_interval):
-    tmp_y = (Gidx // grid_num) * grid_interval
-    tmp_x = (Gidx % grid_num) * grid_interval
+# def Gidx2pos(Gidx, grid_num, grid_interval):
+#     tmp_y = (Gidx // grid_num) * grid_interval
+#     tmp_x = (Gidx % grid_num) * grid_interval
+#     tmp_pos = Pos(tmp_y, tmp_x)
+#     return tmp_pos
+
+def Gidx2pos(Gidx, grid_start_y, grid_start_x, grid_num_y, grid_num_x, grid_interval_y, grid_interval_x):
+    tmp_y = grid_start_y + (Gidx // grid_num_x) * grid_interval_y
+    tmp_x = grid_start_x + (Gidx % grid_num_x) * grid_interval_x
     tmp_pos = Pos(tmp_y, tmp_x)
     return tmp_pos
 
@@ -751,10 +757,30 @@ def main():
     source_pos = []
     house_pos = []
 
-    grid_num = 25
+    grid_num = 20
     grid_interval = N // grid_num
+    grid_start_y = 8
+    grid_start_x = 8
+    grid_interval_y = 8
+    grid_interval_x = 8
+    grid_num_y = 1 + ((N-grid_start_y) // grid_interval_y)
+    grid_num_x = 1 + ((N-grid_start_x) // grid_interval_x)
+
     test_destruct_grid = []
-    test_destruct_grid_broken = [[0] * grid_num for _ in range(grid_num)]
+    # test_destruct_grid_broken = [[0] * grid_num for _ in range(grid_num)]
+    test_destruct_grid_broken = [[0] * grid_num_x for _ in range(grid_num_y)]
+
+
+    # グリッド上の試し掘りする点を指定(リストとして用意)
+    for y in range(grid_start_y, N, grid_interval_y):
+        for x in range(grid_start_x, N, grid_interval_x):
+            test_destruct_grid.append(Pos(y, x))
+
+    # # グリッド上の試し掘りする点を指定(リストとして用意)
+    # for y in range(grid_interval, N, grid_interval):
+    #     for x in range(grid_interval, N, grid_interval):
+    #         test_destruct_grid.append(Pos(y, x))
+
 
     for _ in range(W):
         y, x = (int(v) for v in input().split(" "))
@@ -763,10 +789,6 @@ def main():
         y, x = (int(v) for v in input().split(" "))
         house_pos.append(Pos(y, x))
 
-    # グリッド上の試し掘りする点を指定(リストとして用意)
-    for y in range(grid_interval, N, grid_interval):
-        for x in range(grid_interval, N, grid_interval):
-            test_destruct_grid.append(Pos(y, x))
     
     # power を決定する
     P = 100
@@ -787,14 +809,14 @@ def main():
     broken_pos += tmp_broken_pos
     for tmp_pos in tmp_broken_pos:
         broken_pos_and_cost[str(tmp_pos.y) + "," + str(tmp_pos.x)] += test_P1
-    broken_pos = solver.test_destruction_hoge(test_destruct_grid, test_P1)
+    # broken_pos = solver.test_destruction_hoge(test_destruct_grid, test_P1)
     
-    test_P2 = test_P1*4
-    # 2週目の試し掘り
-    tmp_broken_pos = solver.test_destruction_hoge(test_destruct_grid, test_P2)
-    broken_pos += tmp_broken_pos
-    for tmp_pos in tmp_broken_pos:
-        broken_pos_and_cost[str(tmp_pos.y) + "," + str(tmp_pos.x)] += (test_P1 + test_P2)
+    # test_P2 = test_P1*4
+    # # 2週目の試し掘り
+    # tmp_broken_pos = solver.test_destruction_hoge(test_destruct_grid, test_P2)
+    # broken_pos += tmp_broken_pos
+    # for tmp_pos in tmp_broken_pos:
+    #     broken_pos_and_cost[str(tmp_pos.y) + "," + str(tmp_pos.x)] += (test_P1 + test_P2)
 
     # test_P3 = test_P1*4
     # # 3週目の試し掘り
@@ -808,14 +830,17 @@ def main():
     # デバッグのため print
     # print(f"inpupt={N, W, K, C}", file=sys.stderr)
     for pos in broken_pos:
-        test_destruct_grid_broken[pos.y//grid_interval][pos.x//grid_interval] = 1
+        print(f"pos={pos.y, pos.x, grid_interval, len(test_destruct_grid_broken)}", file=sys.stderr)
+        # test_destruct_grid_broken[pos.y // grid_interval][pos.x // grid_interval] = 1
+        test_destruct_grid_broken[(pos.y-grid_start_y) // grid_interval_y][(pos.x-grid_start_x) // grid_interval_x] = 1
     # print(f"test_destruct_grid_broken={test_destruct_grid_broken}", file=sys.stderr)
 
     # print(f"broken_pos_and_cost={broken_pos_and_cost}", file=sys.stderr)
 
 
     # 隣接リストの作成（重み付きグラフなので、各辺について (隣接頂点, 重み) のタプルを記録する）
-    G = [ [0]*(grid_num**2) for i in range(grid_num**2) ]
+    # G = [ [0]*(grid_num**2) for i in range(grid_num**2) ]
+    G = [ [0]*(grid_num_y*grid_num_x) for i in range(grid_num_y*grid_num_x) ]
     for pos1 in test_destruct_grid:
         for pos2 in test_destruct_grid:
                 # pos1 == pos2 はスキップ
@@ -825,17 +850,30 @@ def main():
                 if abs(pos1.y - pos2.y) + abs(pos1.x - pos2.x) > grid_interval:
                     continue
 
+                # # pos1, pos2 がグリッド上で隣接していない場合はスキップ
+                # if abs(pos1.y - pos2.y) > grid_interval_y:
+                #     continue
+                # if abs(pos1.x - pos2.x) > grid_interval_x:
+                #     continue
+
+
                 # pos1, pos2 の岩盤が破壊済みか否か
                 pos1_broken_flg = False
                 pos2_broken_flg = False
-                if test_destruct_grid_broken[pos1.y//grid_interval][pos1.x//grid_interval]:
+                # if test_destruct_grid_broken[pos1.y//grid_interval][pos1.x//grid_interval]:
+                #     pos1_broken_flg = True
+                # if test_destruct_grid_broken[pos2.y//grid_interval][pos2.x//grid_interval]:
+                #     pos2_broken_flg = True
+                if test_destruct_grid_broken[(pos1.y-grid_start_y) // grid_interval_y][(pos1.x-grid_start_x) // grid_interval_x]:
                     pos1_broken_flg = True
-                if test_destruct_grid_broken[pos2.y//grid_interval][pos2.x//grid_interval]:
+                if test_destruct_grid_broken[(pos2.y-grid_start_y) // grid_interval_y][(pos2.x-grid_start_x) // grid_interval_x]:
                     pos2_broken_flg = True
                 
                 # 隣接リストに値を設定
-                a = pos2Gidx(pos1, grid_num, grid_interval)
-                b = pos2Gidx(pos2, grid_num, grid_interval)
+                # a = pos2Gidx(pos1, grid_num, grid_interval)
+                # b = pos2Gidx(pos2, grid_num, grid_interval)
+                a = pos2Gidx(pos1, grid_start_y, grid_start_x, grid_num_y, grid_num_x, grid_interval_y, grid_interval_x)
+                b = pos2Gidx(pos2, grid_start_y, grid_start_x, grid_num_y, grid_num_x, grid_interval_y, grid_interval_x)
 
                 # if broken_pos_and_cost[b] == 0:
                 #     G[a][b] = 50000
@@ -897,7 +935,8 @@ def main():
 
             # h_broken_pos, s_broken_pos でダイクストラ
             # 経路長と経路を記録
-            tmp_dist, tmp_path = dijkstra(G, pos2Gidx(h_broken_pos, grid_num, grid_interval), pos2Gidx(s_broken_pos, grid_num, grid_interval))
+            # tmp_dist, tmp_path = dijkstra(G, pos2Gidx(h_broken_pos, grid_num, grid_interval), pos2Gidx(s_broken_pos, grid_num, grid_interval))
+            tmp_dist, tmp_path = dijkstra(G, pos2Gidx(h_broken_pos, grid_start_y, grid_start_x, grid_num_y, grid_num_x, grid_interval_y, grid_interval_x), pos2Gidx(s_broken_pos, grid_start_y, grid_start_x, grid_num_y, grid_num_x, grid_interval_y, grid_interval_x))
             # 経路長が最短のものを採用
             if tmp_dist < now_dist:
                 now_path = tmp_path
@@ -910,7 +949,9 @@ def main():
         s_pos = h_broken_pos
         g_pos = h_broken_pos
         for goal_idx in now_path:
-            g_pos = Gidx2pos(goal_idx, grid_num, grid_interval)
+            # g_pos = Gidx2pos(goal_idx, grid_num, grid_interval)
+            g_pos = Gidx2pos(goal_idx, grid_start_y, grid_start_x, grid_num_y, grid_num_x, grid_interval_y, grid_interval_x)
+            print(f"s={s_pos.y, s_pos.x}, g={g_pos.y, g_pos.x}", file=sys.stderr)
             solver.move(s_pos, g_pos)
             s_pos = g_pos
 
